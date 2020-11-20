@@ -2,11 +2,13 @@ package ru.job4j.dream.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.util.Objects;
 
 @Getter
 @Setter
+@ToString
 public class Candidate {
     private int id;
     private String name;
