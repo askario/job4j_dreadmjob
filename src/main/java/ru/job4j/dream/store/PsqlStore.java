@@ -63,7 +63,7 @@ public class PsqlStore implements Store {
                 }
             }
         } catch (Exception e) {
-            log.error(e);
+            log.error("Error message: ", e);
         }
         return posts;
     }
@@ -80,7 +80,7 @@ public class PsqlStore implements Store {
                 }
             }
         } catch (Exception e) {
-            log.error(e);
+            log.error("Error message: ", e);
         }
         return candidates;
     }
@@ -115,7 +115,7 @@ public class PsqlStore implements Store {
                 }
             }
         } catch (Exception e) {
-            log.error(e);
+            log.error("Error during post creation: ", e);
         }
         return post;
     }
@@ -132,7 +132,7 @@ public class PsqlStore implements Store {
                 }
             }
         } catch (Exception e) {
-            log.error(e);
+            log.error("Error during candidate creation: ", e);
         }
         return candidate;
     }
@@ -152,7 +152,7 @@ public class PsqlStore implements Store {
                 }
             }
         } catch (Exception e) {
-            log.error(e);
+            log.error("Error message: ", e);
         }
         return post;
     }
@@ -172,7 +172,7 @@ public class PsqlStore implements Store {
                 }
             }
         } catch (Exception e) {
-            log.error(e);
+            log.error("Error message: ", e);
         }
         return candidate;
     }
@@ -186,7 +186,7 @@ public class PsqlStore implements Store {
             ps.execute();
 
         } catch (Exception e) {
-            log.error(e);
+            log.error("Error while update candidate: ", e);
         }
     }
 
@@ -199,7 +199,7 @@ public class PsqlStore implements Store {
             ps.execute();
 
         } catch (Exception e) {
-            log.error(e);
+            log.error("Error while update post: ", e);
         }
     }
 }
