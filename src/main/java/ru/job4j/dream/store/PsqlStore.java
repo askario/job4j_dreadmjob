@@ -1,5 +1,6 @@
 package ru.job4j.dream.store;
 
+import lombok.extern.log4j.Log4j2;
 import org.apache.commons.dbcp2.BasicDataSource;
 import ru.job4j.dream.model.Candidate;
 import ru.job4j.dream.model.Post;
@@ -14,6 +15,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Properties;
 
+@Log4j2
 public class PsqlStore implements Store {
 
     private final BasicDataSource pool = new BasicDataSource();
@@ -21,7 +23,7 @@ public class PsqlStore implements Store {
     private PsqlStore() {
         Properties cfg = new Properties();
         try (BufferedReader io = new BufferedReader(
-                new FileReader("C:\\Askar\\apache-tomcat-9.0.39\\apache-tomcat-9.0.39\\bin\\db.properties")
+                new FileReader("db.properties")
         )) {
             cfg.load(io);
         } catch (Exception e) {
@@ -61,7 +63,7 @@ public class PsqlStore implements Store {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("Error message: ", e);
         }
         return posts;
     }
@@ -78,7 +80,7 @@ public class PsqlStore implements Store {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("Error message: ", e);
         }
         return candidates;
     }
@@ -113,7 +115,7 @@ public class PsqlStore implements Store {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("Error during post creation: ", e);
         }
         return post;
     }
@@ -130,7 +132,7 @@ public class PsqlStore implements Store {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("Error during candidate creation: ", e);
         }
         return candidate;
     }
@@ -150,7 +152,7 @@ public class PsqlStore implements Store {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("Error message: ", e);
         }
         return post;
     }
@@ -170,7 +172,7 @@ public class PsqlStore implements Store {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("Error message: ", e);
         }
         return candidate;
     }
@@ -184,7 +186,7 @@ public class PsqlStore implements Store {
             ps.execute();
 
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("Error while update candidate: ", e);
         }
     }
 
@@ -197,7 +199,7 @@ public class PsqlStore implements Store {
             ps.execute();
 
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("Error while update post: ", e);
         }
     }
 }
