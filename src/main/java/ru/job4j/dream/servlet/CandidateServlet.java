@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -28,7 +29,8 @@ public class CandidateServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setAttribute("candidates", psqlStore.findAllCandidates());
+        req.setAttribute("candidates", new ArrayList<>(PsqlStore.instOf().findAllCandidates()));
+        req.setAttribute("user", req.getSession().getAttribute("user"));
         req.getRequestDispatcher("candidates.jsp").forward(req, resp);
     }
 

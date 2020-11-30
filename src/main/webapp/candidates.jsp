@@ -28,7 +28,17 @@
     <div class="row">
         <div class="card" style="width: 100%">
             <div class="card-header">
-                Кандидаты
+                   <div class="row">
+                       <ul class="nav">
+                           <li class="nav-item">Кандидаты</li>
+                       </ul>
+
+                      <ul class="navbar-nav ml-auto">
+                             <li class="nav-item">
+                                 <a class="nav-link" href="<%=request.getContextPath()%>/login.jsp"> <c:out value="${user.name}"/> | Выйти</a>
+                             </li>
+                      </ul>
+                   </div>
             </div>
             <div class="card-body">
                 <table class="table">

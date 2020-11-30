@@ -33,11 +33,23 @@
     <div class="row">
         <div class="card" style="width: 100%">
             <div class="card-header">
-                <% if (id == null) { %>
-                    Новая вакансия.
-                <% } else { %>
-                    Редактирование вакансии.
-                <% } %>
+                   <div class="row">
+                       <ul class="nav">
+                           <li class="nav-item">
+                              <% if (id == null) { %>
+                                  Новая вакансия.
+                              <% } else { %>
+                                  Редактирование вакансии.
+                              <% } %>
+                           </li>
+                       </ul>
+
+                      <ul class="navbar-nav ml-auto">
+                             <li class="nav-item">
+                                 <a class="nav-link" href="<%=request.getContextPath()%>/login.jsp"> <c:out value="${user.name}"/> | Выйти</a>
+                             </li>
+                      </ul>
+                   </div>
             </div>
             <div class="card-body">
                 <form action="<%=request.getContextPath()%>/posts.do?id=<%=post.getId()%>" method="post">
