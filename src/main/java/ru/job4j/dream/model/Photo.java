@@ -1,21 +1,25 @@
 package ru.job4j.dream.model;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.util.Objects;
 
 @Getter
 @Setter
 @ToString
-@NoArgsConstructor
-@AllArgsConstructor
-public class Candidate {
+public class Photo {
     private int id;
     private String name;
-    private Photo photo;
 
-    public Candidate(int id, String name) {
+
+    public Photo(int id, String name) {
         this.id = id;
+        this.name = name;
+    }
+
+    public Photo(String name) {
         this.name = name;
     }
 
@@ -23,9 +27,9 @@ public class Candidate {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Candidate candidate = (Candidate) o;
-        return id == candidate.id &&
-                Objects.equals(name, candidate.name);
+        Photo photo = (Photo) o;
+        return id == photo.id &&
+                Objects.equals(name, photo.name);
     }
 
     @Override

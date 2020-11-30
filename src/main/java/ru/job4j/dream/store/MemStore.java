@@ -1,6 +1,7 @@
 package ru.job4j.dream.store;
 
 import ru.job4j.dream.model.Candidate;
+import ru.job4j.dream.model.Photo;
 import ru.job4j.dream.model.Post;
 
 import java.util.Collection;
@@ -58,5 +59,10 @@ public class MemStore implements Store {
 
     public Candidate findCandidateById(int id) {
         return candidates.get(id);
+    }
+
+    @Override
+    public Photo findPhotoById(int id) {
+        return null;
     }
 }

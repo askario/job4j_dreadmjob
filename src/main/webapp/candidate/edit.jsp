@@ -1,6 +1,8 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ page import="ru.job4j.dream.store.PsqlStore" %>
 <%@ page import="ru.job4j.dream.model.Candidate" %>
+<%@ page import="ru.job4j.dream.model.Photo" %>
+<%@ page import="ru.job4j.dream.store.Store" %>
 
 <!doctype html>
 <html lang="en">
@@ -23,11 +25,17 @@
 </head>
 <body>
 <%
-    String id = request.getParameter("id");
-    Candidate candidate = new Candidate(0, "");
-    if (id != null) {
-        candidate = PsqlStore.instOf().findCandidateById(Integer.valueOf(id));
-    }
+        final Store store =  PsqlStore.instOf();
+        String id = request.getParameter("id");
+        Candidate candidate = new Candidate(0, "");
+        if (id != null) {
+            candidate = store.findCandidateById(Integer.valueOf(id));
+        }
+
+        Photo photo = candidate.getPhoto();
+        if(photo != null) {
+            photo = store.findPhotoById(photo.getId());
+        }
 %>
 <div class="container pt-3">
     <div class="row">
@@ -39,17 +47,51 @@
                     Редактирование кандидата.
                 <% } %>
             </div>
+
             <div class="card-body">
-                <form action="<%=request.getContextPath()%>/candidates.do?id=<%=candidate.getId()%>" method="post">
-                    <div class="form-group">
-                        <label>Имя</label>
-                        <input type="text" class="form-control" name="name" value="<%=candidate.getName()%>">
+                <form action="<%=request.getContextPath()%>/candidates.do?id=<%=candidate.getId()%>" method="post" enctype="multipart/form-data">
+                    <div>
+                    <div class="row">
+                        <div class="col-lg-4 col-md-5 xs-margin-30px-bottom">
+                            <% if(photo == null) { %>
+                                <img width="200" height="200" src="${pageContext.request.contextPath}/static/user-logo.png" alt="img-fluid">
+                            <% } else { %>
+                                <img width="200" height="200" src="${pageContext.request.contextPath}/download?name=<%=photo.getName()%>" alt="img-fluid">
+                            <% } %>
+                            <input type="file"  id="photo" name="photo" accept="image/*" onchange="onChangeInput()">
+                        </div>
                     </div>
-                    <button type="submit" class="btn btn-primary">Сохранить</button>
+
+                    <div class="col-lg-8 col-md-7">
+                        <div class="form-group">
+                            <label>Имя</label>
+                            <input type="text" class="form-control" name="name" value="<%=candidate.getName()%>">
+                        </div>
+                        <button id="savebtn" type="submit" class="btn btn-primary">Сохранить</button>
+                     </div>
+                    </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
+<script>
+    const onChangeInput = () => {
+        const image = document.querySelector('img');
+        const currentSrc = image.getAttribute("src");
+        const reader = new FileReader();
+        const file    = document.querySelector('input[type=file]').files[0];
+
+        reader.onloadend = function () {
+            image.src = reader.result;
+        };
+
+        if(file) {
+            reader.readAsDataURL(file);
+        } else {
+            image.src = currentSrc;
+        }
+    };
+</script>
 </body>
 </html>

@@ -44,8 +44,16 @@
                                     <a href='<c:url value="/candidate/edit.jsp?id=${can.id}"/>'>
                                         <i class="fa fa-edit mr-3"></i>
                                     </a>
-                                    <c:out value="${can.name}"/>
                                 </td>
+                            <td><c:out value="${can.name}"/></td>
+                            <td>
+                                 <c:if test="${can.photo == null}">
+                                     <img src="<c:url value='/static/user-logo.png'/>" width="100px" height="100px"/>
+                                 </c:if>
+                                <c:if test="${can.photo != null}">
+                                    <img src="<c:url value='/download?name=${can.photo.name}'/>" width="100px" height="100px"/>
+                                </c:if>
+                            </td>
                             </tr>
                         </c:forEach>
                     </tbody>
