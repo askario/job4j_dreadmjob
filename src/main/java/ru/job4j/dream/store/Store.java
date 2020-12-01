@@ -28,4 +28,5 @@ public interface Store {
 
     Photo findPhotoById(int id);
 
+    User findUserByEmail(String email);
 }

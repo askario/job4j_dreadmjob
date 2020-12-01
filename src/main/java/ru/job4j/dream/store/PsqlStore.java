@@ -15,7 +15,7 @@ public class PsqlStore implements Store {
     private final DbStore postData = PostData.instOf();
     private final DbStore candidateData = CandidateData.instOf();
     private final DbStore photoData = PhotoData.instOf();
-    private final DbStore usersData = UsersData.instOf();
+    private final UsersData usersData = UsersData.instOf();
 
     private PsqlStore() {
     }
@@ -77,6 +77,11 @@ public class PsqlStore implements Store {
     @Override
     public User findUserById(int id) {
         return (User) usersData.findById(id);
+    }
+
+    @Override
+    public User findUserByEmail(String email){
+        return usersData.findByEmail(email);
     }
 
     public void delete(User user) {

@@ -1,9 +1,6 @@
 package ru.job4j.dream.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Objects;
 
@@ -11,10 +8,14 @@ import java.util.Objects;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@RequiredArgsConstructor
 public class User {
     private int id;
+    @NonNull
     private String name;
+    @NonNull
     private String email;
+    @NonNull
     private String password;
 
     @Override

@@ -20,12 +20,13 @@ public class UsersData implements DbStore<User> {
     private final String UPDATE_USER = "UPDATE USERS SET name = (?) WHERE id = (?)";
     private final String SELECT_WHERE = "SELECT * FROM USERS WHERE id = (?)";
     private final String DELETE_USER = "DELETE FROM USERS WHERE id = (?)";
+    private final String SELECT_BY_EMAIL = "SELECT * FROM users WHERE email = (?) ORDER BY id DESC LIMIT 1;";
 
     private static final class Lazy {
-        private static final DbStore INST = new UsersData();
+        private static final UsersData INST = new UsersData();
     }
 
-    public static DbStore instOf() {
+    public static UsersData instOf() {
         return UsersData.Lazy.INST;
     }
 
@@ -117,6 +118,25 @@ public class UsersData implements DbStore<User> {
             }
         } catch (Exception e) {
             log.error("Error during user creation: ", e);
+        }
+        return user;
+    }
+
+    public User findByEmail(String email) {
+        User user = null;
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps = cn.prepareStatement(SELECT_BY_EMAIL, PreparedStatement.RETURN_GENERATED_KEYS)
+        ) {
+            ps.setString(1, email);
+            ps.execute();
+
+            try (ResultSet it = ps.getResultSet()) {
+                if (it.next()) {
+                    user = new User(it.getInt("id"), it.getString("name"), it.getString("email"), it.getString("password"));
+                }
+            }
+        } catch (Exception e) {
+            log.error("Error message: ", e);
         }
         return user;
     }

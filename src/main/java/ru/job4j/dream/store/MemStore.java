@@ -81,4 +81,9 @@ public class MemStore implements Store {
     public Photo findPhotoById(int id) {
         return null;
     }
+
+    @Override
+    public User findUserByEmail(String email) {
+        return null;
+    }
 }
