@@ -8,6 +8,7 @@ import ru.job4j.dream.model.Post;
 import ru.job4j.dream.model.User;
 
 import java.util.Collection;
+import java.util.Optional;
 
 @Log4j2
 public class PsqlStore implements Store {
@@ -80,8 +81,8 @@ public class PsqlStore implements Store {
     }
 
     @Override
-    public User findUserByEmail(String email){
-        return usersData.findByEmail(email);
+    public Optional<User> findUserByEmail(String email) {
+        return Optional.ofNullable(usersData.findByEmail(email));
     }
 
     public void delete(User user) {

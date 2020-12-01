@@ -20,7 +20,7 @@ public class AuthServlet extends HttpServlet {
         String email = req.getParameter("email");
         String password = req.getParameter("password");
 
-        Optional<User> userOpt = Optional.ofNullable(store.findUserByEmail(email));
+        Optional<User> userOpt = store.findUserByEmail(email);
 //        User user = userOpt.orElseThrow(() -> new AuthenticationException("No such user is presented"));
 
         if (userOpt.isPresent() && userOpt.get().getPassword().equals(password)) {
