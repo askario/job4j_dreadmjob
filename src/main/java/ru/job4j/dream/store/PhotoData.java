@@ -93,6 +93,8 @@ public class PhotoData implements DbStore<Photo> {
              PreparedStatement ps = cn.prepareStatement(UPDATE_PHOTO, PreparedStatement.RETURN_GENERATED_KEYS)
         ) {
             ps.setString(1, photo.getName());
+            ps.setInt(2, photo.getId());
+
             ps.execute();
         } catch (Exception e) {
             log.error("Error while update photo: ", e);

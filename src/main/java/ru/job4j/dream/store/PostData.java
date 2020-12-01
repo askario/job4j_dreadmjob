@@ -93,6 +93,8 @@ public class PostData implements DbStore<Post> {
              PreparedStatement ps = cn.prepareStatement(UPDATE_POST, PreparedStatement.RETURN_GENERATED_KEYS)
         ) {
             ps.setString(1, post.getName());
+            ps.setInt(2, post.getId());
+
             ps.execute();
         } catch (Exception e) {
             log.error("Error while update post: ", e);

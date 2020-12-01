@@ -5,6 +5,7 @@ import org.apache.commons.dbcp2.BasicDataSource;
 import ru.job4j.dream.model.Candidate;
 import ru.job4j.dream.model.Photo;
 import ru.job4j.dream.model.Post;
+import ru.job4j.dream.model.User;
 
 import java.util.Collection;
 
@@ -14,6 +15,7 @@ public class PsqlStore implements Store {
     private final DbStore postData = PostData.instOf();
     private final DbStore candidateData = CandidateData.instOf();
     private final DbStore photoData = PhotoData.instOf();
+    private final DbStore usersData = UsersData.instOf();
 
     private PsqlStore() {
     }
@@ -60,5 +62,28 @@ public class PsqlStore implements Store {
 
     public Photo findPhotoById(int id) {
         return (Photo) photoData.findById(id);
+    }
+
+    @Override
+    public Collection<User> findAll() {
+        return usersData.findAll();
+    }
+
+    @Override
+    public void save(User user) {
+        usersData.save(user);
+    }
+
+    @Override
+    public User findUserById(int id) {
+        return (User) usersData.findById(id);
+    }
+
+    public void delete(User user) {
+        usersData.delete(user);
+    }
+
+    public void update(User user) {
+        usersData.delete(user);
     }
 }
