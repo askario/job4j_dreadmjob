@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Index.html</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <form class="container-fluid">
+            <div class="form-group">
+                <label class="form-label" for="firstName-control">First name:</label>
+                <input id="firstName-control" class="form-control" type="text" name="firstName">
+            </div>
+            <div class="form-group">
+                <label class="form-check-label" for="lastName-control">Last name:</label>
+                <input id="lastName-control" class="form-control" type="text" name="lastName">
+            </div>
+            <div class="form-group">
+                <label>Sex: </label>
+                <label class="radio-inline">
+                    <input type="radio" name="gender" value="male">
+                    Male
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" name="gender" value="female">
+                    Female
+                </label>
+            </div>
+            <div class="form-group">
+                <label class="form-check-label" for="description-control">Enter description:</label>
+                <input id="description-control" class="form-control" type="text" name="description">
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+        </form>
+    </div>
+    <div class="row">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>First name</th>
+                <th>Last name</th>
+                <th>Sex</th>
+                <th>Description</th>
+            </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>
