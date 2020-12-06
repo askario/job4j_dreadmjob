@@ -8,7 +8,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script>
-        function validate() {
+        const validateThenAdd = () => {
             const firstName = $('#firstName-control').val();
             const lastName = $('#lastName-control').val();
             const description = $('#description-control').val();
@@ -16,9 +16,27 @@
             const maleChecked = $('#maleRadio')[0].checked;
             const femaleChecked = $('#femaleRadio')[0].checked;
 
-            if(firstName === "" || lastName === "" || description === "" || (!maleChecked && !femaleChecked))
-                alert("Please enter correct values !");
+            const validate = (after) => {
+                if(firstName === "" || lastName === "" || description === "" || (!maleChecked && !femaleChecked)) {
+                    alert("Please enter correct values !");
+                    return;
+                }
+                after();
+            };
+
+            const add = () => {
+                const table = $('tbody tr:last');
+                table.after('<tr>' +
+                    '<td>' + firstName +'</td>' +
+                    '<td>' + lastName +'</td>' +
+                    '<td>' + ( maleChecked ? 'Male' : 'Female')  +'</td>' +
+                    '<td>' + description +'</td>' +
+                '</tr>');
+            };
+
+            validate(add);
         };
+
 
     </script>
 </head>
@@ -50,7 +68,7 @@
                 <input id="description-control" class="form-control" type="text" name="description">
             </div>
             <div class="form-group">
-                <button type="submit" class="btn btn-primary" onclick="validate()">Save</button>
+                <button type="reset" class="btn btn-primary" onclick="validateThenAdd()">Save</button>
             </div>
         </form>
     </div>
@@ -64,7 +82,14 @@
                 <th>Description</th>
             </tr>
             </thead>
-            <tbody></tbody>
+            <tbody>
+            <tr class="hide">
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            </tbody>
         </table>
     </div>
 </div>
