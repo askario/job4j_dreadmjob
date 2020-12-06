@@ -7,6 +7,20 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script>
+        function validate() {
+            const firstName = $('#firstName-control').val();
+            const lastName = $('#lastName-control').val();
+            const description = $('#description-control').val();
+
+            const maleChecked = $('#maleRadio')[0].checked;
+            const femaleChecked = $('#femaleRadio')[0].checked;
+
+            if(firstName === "" || lastName === "" || description === "" || (!maleChecked && !femaleChecked))
+                alert("Please enter correct values !");
+        };
+
+    </script>
 </head>
 <body>
 <div class="container">
@@ -23,11 +37,11 @@
             <div class="form-group">
                 <label>Sex: </label>
                 <label class="radio-inline">
-                    <input type="radio" name="gender" value="male">
+                    <input type="radio" name="gender" value="male" id="maleRadio">
                     Male
                 </label>
                 <label class="radio-inline">
-                    <input type="radio" name="gender" value="female">
+                    <input type="radio" name="gender" value="female" id="femaleRadio">
                     Female
                 </label>
             </div>
@@ -36,7 +50,7 @@
                 <input id="description-control" class="form-control" type="text" name="description">
             </div>
             <div class="form-group">
-                <button type="submit" class="btn btn-primary">Save</button>
+                <button type="submit" class="btn btn-primary" onclick="validate()">Save</button>
             </div>
         </form>
     </div>
