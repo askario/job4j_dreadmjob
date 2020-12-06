@@ -10,19 +10,33 @@
 <body>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script>
+        class GreetingRequest {
+            constructor(email) {
+                this.email = email;
+            }
+
+            toJson() {
+                return JSON.stringify(this);
+            }
+        }
+
         const sendGreeting = () => {
-        $.ajax({
-            type: 'GET',
-            url: 'http://localhost:8080/dreamjob/greet',
-            data: 'name=' + $('#exampleInputEmail1').val(),
-            dataType: 'text'
-        }).done((data) => {
-            $('input').before(
-                '<p>' + data + '</p>'
-            );
-        }).fail((err) => {
-            alert(err);
-        });
+            const emailValue = $('#exampleInputEmail1').val(),
+                greetingRequest = new GreetingRequest(emailValue);
+
+            $.ajax({
+                type: 'POST',
+                url: 'http://localhost:8080/dreamjob/greet',
+                data: greetingRequest.toJson(),
+                contentType: 'application/json',
+                dataType: 'json'
+            }).done((res) => {
+                $('input').before(
+                    '<p>' + res.text + '</p>'
+                );
+            }).fail((err) => {
+                alert(err);
+            });
     }
 </script>
 
