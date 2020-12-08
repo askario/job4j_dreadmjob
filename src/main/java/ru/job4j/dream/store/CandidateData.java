@@ -3,6 +3,7 @@ package ru.job4j.dream.store;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.dbcp2.BasicDataSource;
 import ru.job4j.dream.model.Candidate;
+import ru.job4j.dream.model.City;
 import ru.job4j.dream.model.Photo;
 
 import java.sql.Connection;
@@ -18,11 +19,12 @@ import java.util.Optional;
 public class CandidateData implements DbStore<Candidate> {
     private final BasicDataSource pool = PsqlSetup.instOf().getPool();
     private final DbStore photoData = PhotoData.instOf();
+    private final DbStore cityData = CityData.instOf();
 
     private final String SELECT_ALL = "SELECT * FROM CANDIDATE;";
-    private final String CREATE_CANDIDATE = "INSERT INTO CANDIDATE(name,photo_id) VALUES (?,?);";
+    private final String CREATE_CANDIDATE = "INSERT INTO CANDIDATE(name, photo_id, city_id) VALUES (?,?);";
     private final String SELECT_WHERE = "SELECT * FROM CANDIDATE WHERE id = (?);";
-    private final String UPDATE_CANDIDATE = "UPDATE CANDIDATE SET name = ?, photo_id = ? WHERE id = ?;";
+    private final String UPDATE_CANDIDATE = "UPDATE CANDIDATE SET name = ?, photo_id = ?, city_id = ? WHERE id = ?;";
     private final String DELETE_CANDIDATE = "DELETE FROM PHOTO WHERE id = (?)";
 
     private static final class Lazy {
@@ -41,7 +43,7 @@ public class CandidateData implements DbStore<Candidate> {
         ) {
             try (ResultSet it = ps.executeQuery()) {
                 while (it.next()) {
-                    candidates.add(new Candidate(it.getInt("id"), it.getString("name"), (Photo) photoData.findById(it.getInt("photo_id"))));
+                    candidates.add(new Candidate(it.getInt("id"), it.getString("name"), (Photo) photoData.findById(it.getInt("photo_id")), (City) cityData.findById(it.getInt("city_id"))));
                 }
             }
         } catch (Exception e) {
@@ -70,7 +72,7 @@ public class CandidateData implements DbStore<Candidate> {
 
             try (ResultSet it = ps.getResultSet()) {
                 if (it.next()) {
-                    candidate = new Candidate(it.getInt("id"), it.getString("name"), new Photo(it.getInt("photo_id"), null));
+                    candidate = new Candidate(it.getInt("id"), it.getString("name"), new Photo(it.getInt("photo_id"), null),new City(it.getInt("city_id"),null));
                 }
             }
         } catch (Exception e) {
@@ -111,7 +113,9 @@ public class CandidateData implements DbStore<Candidate> {
             else
                 ps.setNull(2, Types.INTEGER);
 
-            ps.setInt(3, candidate.getId());
+            ps.setInt(3, candidate.getCity().getId());
+
+            ps.setInt(4, candidate.getId());
 
             ps.execute();
         } catch (Exception e) {
@@ -132,6 +136,8 @@ public class CandidateData implements DbStore<Candidate> {
                 ps.setInt(2, photoOpt.get().getId());
             else
                 ps.setNull(2, Types.INTEGER);
+
+            ps.setInt(3, candidate.getCity().getId());
 
             ps.execute();
             try (ResultSet id = ps.getGeneratedKeys()) {

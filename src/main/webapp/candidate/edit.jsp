@@ -2,6 +2,7 @@
 <%@ page import="ru.job4j.dream.store.PsqlStore" %>
 <%@ page import="ru.job4j.dream.model.Candidate" %>
 <%@ page import="ru.job4j.dream.model.Photo" %>
+<%@ page import="ru.job4j.dream.model.City" %>
 <%@ page import="ru.job4j.dream.store.Store" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
@@ -21,8 +22,20 @@
             integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
             integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <title>Работа мечты</title>
+    <script>
+        const validate = (f) => {
+            const nameInput = $('#nameInp').val();
+
+            if(nameInput === "") {
+                alert("Please enter correct values !");
+                return;
+            } else {
+                        f.submit();
+            }
+         };
+    </script>
 </head>
 <body>
 <%
@@ -36,6 +49,12 @@
         Photo photo = candidate.getPhoto();
         if(photo != null) {
             photo = store.findPhotoById(photo.getId());
+        }
+
+        City city = candidate.getCity();
+        Integer cityId = null;
+        if(city != null) {
+            cityId = city.getId();
         }
 %>
 <div class="container pt-3">
@@ -72,7 +91,7 @@
             </div>
 
             <div class="card-body">
-                <form action="<%=request.getContextPath()%>/candidates.do?id=<%=candidate.getId()%>" method="post" enctype="multipart/form-data">
+                <form action="<%=request.getContextPath()%>/candidates.do?id=<%=candidate.getId()%>" method="post" enctype="multipart/form-data" onsubmit="validate();return false;">
                     <div>
                     <div class="row">
                         <div class="col-lg-4 col-md-5 xs-margin-30px-bottom">
@@ -88,8 +107,12 @@
                     <div class="col-lg-8 col-md-7">
                         <div class="form-group">
                             <label>Имя</label>
-                            <input type="text" class="form-control" name="name" value="<%=candidate.getName()%>">
+                            <input id="nameInp" type="text" class="form-control" name="name" value="<%=candidate.getName()%>">
                         </div>
+
+                    <label for="cars">Выберите город:</label>
+                    <select name="city" id="city-dropdown"></select>
+
                         <button id="savebtn" type="submit" class="btn btn-primary">Сохранить</button>
                      </div>
                     </div>
@@ -99,6 +122,8 @@
     </div>
 </div>
 <script>
+    const cityId = '<%= cityId %>';
+
     const onChangeInput = () => {
         const image = document.querySelector('img');
         const currentSrc = image.getAttribute("src");
@@ -115,6 +140,19 @@
             image.src = currentSrc;
         }
     };
+
+    $(document).ready(() => {
+                    $.ajax({
+                        type: 'GET',
+                        url: 'http://localhost:8080/dreamjob/city',
+                        contentType: 'application/json',
+                        dataType: 'json'
+                    }).done((res) => {
+                        $('#city-dropdown').append(res.map(city => '<option value=' + city.id + " " + (city.id == cityId ? "selected" : "") + '>' + city.name + '</option>'));
+                    }).fail((err) => {
+                        alert(err);
+                    });
+    });
 </script>
 </body>
 </html>

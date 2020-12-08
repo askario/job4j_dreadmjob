@@ -6,6 +6,7 @@ import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import ru.job4j.dream.model.Candidate;
+import ru.job4j.dream.model.City;
 import ru.job4j.dream.model.Photo;
 import ru.job4j.dream.store.PsqlStore;
 import ru.job4j.dream.store.Store;
@@ -67,6 +68,9 @@ public class CandidateServlet extends HttpServlet {
                 } else {
                     if (item.getFieldName().equals("name")) {
                         candidate.setName(item.getString());
+                    }
+                    if (item.getFieldName().equals("city")) {
+                        candidate.setCity(new City(Integer.valueOf(item.getString()), null));
                     }
                 }
             }

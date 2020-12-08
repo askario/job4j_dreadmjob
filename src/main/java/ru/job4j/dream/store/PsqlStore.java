@@ -2,10 +2,7 @@ package ru.job4j.dream.store;
 
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.dbcp2.BasicDataSource;
-import ru.job4j.dream.model.Candidate;
-import ru.job4j.dream.model.Photo;
-import ru.job4j.dream.model.Post;
-import ru.job4j.dream.model.User;
+import ru.job4j.dream.model.*;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -16,6 +13,7 @@ public class PsqlStore implements Store {
     private final DbStore postData = PostData.instOf();
     private final DbStore candidateData = CandidateData.instOf();
     private final DbStore photoData = PhotoData.instOf();
+    private final CityData cityData = CityData.instOf();
     private final UsersData usersData = UsersData.instOf();
 
     private PsqlStore() {
@@ -85,6 +83,16 @@ public class PsqlStore implements Store {
         return Optional.ofNullable(usersData.findByEmail(email));
     }
 
+    @Override
+    public Collection<City> getAllCities() {
+        return cityData.findAll();
+    }
+
+    @Override
+    public Optional<City> findCityById(int id) {
+        return Optional.ofNullable(cityData.findById(id));
+    }
+
     public void delete(User user) {
         usersData.delete(user);
     }
@@ -92,4 +100,6 @@ public class PsqlStore implements Store {
     public void update(User user) {
         usersData.delete(user);
     }
+
+
 }

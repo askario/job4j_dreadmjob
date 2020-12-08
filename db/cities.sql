@@ -1,0 +1,4 @@
+INSERT INTO city(name) VALUES
+	('UFA'),
+	('MOSCOW'),
+	('SAINT-PETERSBURG')

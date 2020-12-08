@@ -20,3 +20,8 @@ CREATE TABLE IF NOT EXISTS users (
    email TEXT,
    password TEXT
 );
+
+CREATE TABLE IF NOT EXISTS city (
+   id SERIAL PRIMARY KEY,
+   name TEXT
+);
