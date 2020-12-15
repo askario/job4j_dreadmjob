@@ -11,6 +11,14 @@
     </appenders>
 
     <loggers>
+        <logger name="org.hibernate.SQL" level="debug" additivity="false">
+            <appender-ref ref="Console"/>
+            <appender-ref ref="MyFile"/>
+        </logger>
+        <logger name="org.hibernate" level="info" additivity="false">
+            <appender-ref ref="Console"/>
+            <appender-ref ref="MyFile"/>
+        </logger>
         <root level="debug">
             <appender-ref ref="Console" level="info"/>
             <appender-ref ref="MyFile" level="error"/>

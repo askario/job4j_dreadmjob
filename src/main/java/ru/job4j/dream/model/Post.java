@@ -6,6 +6,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.Objects;
 
 @Getter
@@ -20,7 +21,15 @@ public class Post {
     private int id;
     private String name;
     private String description;
-    private String created;
+    private Timestamp created;
+
+    public static Post of(String name, String description, Timestamp timestamp) {
+        Post post = new Post();
+        post.setName(name);
+        post.setDescription(description);
+        post.setCreated(timestamp);
+        return post;
+    }
 
     public Post(int id, String name) {
         this.id = id;
