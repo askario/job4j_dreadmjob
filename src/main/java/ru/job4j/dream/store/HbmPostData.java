@@ -1,5 +1,6 @@
 package ru.job4j.dream.store;
 
+import lombok.extern.log4j.Log4j2;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
@@ -7,9 +8,10 @@ import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import ru.job4j.dream.model.Post;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
+@Log4j2
 public class HbmPostData implements DbStore<Post>, AutoCloseable {
     private final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
             .configure().build();
@@ -34,11 +36,16 @@ public class HbmPostData implements DbStore<Post>, AutoCloseable {
 
     @Override
     public Collection<Post> findAll() {
-        Session session = sf.openSession();
-        session.beginTransaction();
-        List<Post> posts = session.createQuery("from ru.job4j.dream.model.Post").list();
-        session.getTransaction().commit();
-        session.close();
+        Collection<Post> posts = new ArrayList<>();
+        try (Session session = sf.openSession()) {
+            session.beginTransaction();
+            posts = session.createQuery("from ru.job4j.dream.model.Post").list();
+            session.getTransaction().commit();
+            session.close();
+        } catch (Exception e) {
+            log.error("Error while trying to fetch all posts: ", e);
+            sf.getCurrentSession().getTransaction().rollback();
+        }
         return posts;
     }
 
@@ -53,38 +60,51 @@ public class HbmPostData implements DbStore<Post>, AutoCloseable {
 
     @Override
     public Post findById(int id) {
-        Session session = sf.openSession();
-        session.beginTransaction();
-        Post post = session.get(Post.class, id);
-        session.getTransaction().commit();
-        session.close();
+        Post post = null;
+        try (Session session = sf.openSession()) {
+            session.beginTransaction();
+            post = session.get(Post.class, id);
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            log.error("Error in findById post: ", e);
+            sf.getCurrentSession().getTransaction().rollback();
+        }
         return post;
     }
 
     @Override
     public void delete(Post post) {
-        Session session = sf.openSession();
-        session.beginTransaction();
-        session.delete(post);
-        session.getTransaction().commit();
-        session.close();
+        try (Session session = sf.openSession()) {
+            session.beginTransaction();
+            session.delete(post);
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            log.error("Error while trying to delete post: ", e);
+            sf.getCurrentSession().getTransaction().rollback();
+        }
     }
 
     @Override
     public void update(Post post) {
-        Session session = sf.openSession();
-        session.beginTransaction();
-        session.update(post);
-        session.getTransaction().commit();
-        session.close();
+        try (Session session = sf.openSession()) {
+            session.beginTransaction();
+            session.update(post);
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            log.error("Error while updating post: ", e);
+            sf.getCurrentSession().getTransaction().rollback();
+        }
     }
 
     private Post create(Post post) {
-        Session session = sf.openSession();
-        session.beginTransaction();
-        session.save(post);
-        session.getTransaction().commit();
-        session.close();
+        try (Session session = sf.openSession()) {
+            session.beginTransaction();
+            session.save(post);
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            log.error("Error while creating new post: ", e);
+            sf.getCurrentSession().getTransaction().rollback();
+        }
         return post;
     }
 }
