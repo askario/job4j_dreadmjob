@@ -41,7 +41,6 @@ public class HbmPostData implements DbStore<Post>, AutoCloseable {
             session.beginTransaction();
             posts = session.createQuery("from ru.job4j.dream.model.Post").list();
             session.getTransaction().commit();
-            session.close();
         } catch (Exception e) {
             log.error("Error while trying to fetch all posts: ", e);
             sf.getCurrentSession().getTransaction().rollback();
